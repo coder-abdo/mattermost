@@ -5,7 +5,6 @@ package app
 
 import (
 	"bytes"
-	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -893,10 +892,9 @@ func TestErrorString(t *testing.T) {
 func TestHookContext(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
+	ctx := request.EmptyContext(th.TestLogger)
 
 	// We don't actually have a session, we are faking it so just set something arbitrarily
-	ctx := request.NewContext(context.Background(), model.NewId(), model.NewId(), model.NewId(), model.NewId(), model.NewId(), model.Session{}, nil)
-	ctx.SetLogger(th.TestLogger)
 	ctx.Session().Id = model.NewId()
 
 	var mockAPI plugintest.API
